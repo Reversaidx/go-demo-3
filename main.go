@@ -10,7 +10,7 @@ import (
 	"strconv"
 	"strings"
 	"time"
-
+        "github.com/prometheus/client_golang/prometheus/promhttp"
 	"github.com/prometheus/client_golang/prometheus"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -75,7 +75,7 @@ func RunServer() {
 	mux.HandleFunc("/demo/hello", HelloServer)
 	mux.HandleFunc("/demo/person", PersonServer)
 	mux.HandleFunc("/demo/random-error", RandomErrorServer)
-	mux.Handle("/metrics", prometheusHandler())
+	mux.Handle("/metrics", promhttp.Handler())
 	logFatal("ListenAndServe: ", httpListenAndServe(":8080", mux))
 }
 
@@ -140,9 +140,6 @@ func PersonServer(w http.ResponseWriter, req *http.Request) {
 	io.WriteString(w, msg)
 }
 
-var prometheusHandler = func() http.Handler {
-	return prometheus.Handler()
-}
 
 var findPeople = func(res *[]Person) error {
 	return coll.Find(bson.M{}).All(res)

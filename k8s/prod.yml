@@ -4,7 +4,7 @@ metadata:
   name: api
   namespace: go-demo-3
   annotations:
-    kubernetes.io/ingress.class: nginx
+    
     ingress.kubernetes.io/ssl-redirect: "false"
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
@@ -144,7 +144,7 @@ spec:
     spec:
       containers:
       - name: api
-        image: vfarcic/go-demo-3:latest
+        image: reversaidx/go-demo-3:latest
         env:
         - name: DB
           value: db
