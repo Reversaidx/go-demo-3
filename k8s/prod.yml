@@ -3,11 +3,10 @@ kind: Ingress
 metadata:
   name: api
   namespace: go-demo-3
-  annotations:
-    
-    ingress.kubernetes.io/ssl-redirect: "false"
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
+  backend:
+    serviceName: api
+    servicePort: 8080
   rules:
   - http:
       paths:
@@ -144,7 +143,10 @@ spec:
     spec:
       containers:
       - name: api
-        image: reversaidx/go-demo-3:latest
+        image: reversaidx/go-demo-3:1.0
+        ports:
+          - name: api
+            containerPort: 8080
         env:
         - name: DB
           value: db
@@ -178,3 +180,4 @@ spec:
     port: 8080
   selector:
     app: api
+  type: NodePort
